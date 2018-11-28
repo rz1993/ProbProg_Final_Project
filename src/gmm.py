@@ -77,17 +77,24 @@ class GMM(object):
             x_ll = tf.reduce_sum(x_ll, axis=3)
             x_ll = tf.reduce_mean(x_ll, axis=1)
 
+        self.sample_t_ph = tf.placeholder(tf.int32, ())
         self.eval_ops = {
             'generative_post': x_post,
-            'post_log_prob': x_ll
+            'qmu': qmu,
+            'qsigma': qsigma,
+            'post_running_mu': tf.reduce_mean(
+                qmu.params[:self.sample_t_ph],
+                axis=0
+            )
+            'post_log_prob': xll
         }
 
-    def make_feed_dict_trn(self, data, epoch, n_epochs):
+    def make_feed_dict_trn(self, data, epoch=None, n_epochs=None):
         return {
             self.x_ph: data
         }
 
-    def make_feed_dict_test(self, data, epoch, n_epochs, sample_size=100):
+    def make_feed_dict_test(self, data, epoch=None, n_epochs=None, sample_size=100):
         return {
             self.x_ph: data,
             self.sample_size: sample_size

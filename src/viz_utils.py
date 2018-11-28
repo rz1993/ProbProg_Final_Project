@@ -8,7 +8,7 @@ def convert_to_2d(z, perplexity=30):
                          init='random',
                          learning_rate=15.,
                          perplexity=perplexity)
-    z2d = tsne.fit_transform(tsne)
+    z2d = tsne.fit_transform(z)
     return z2d
 
 def plot_players(z, z_info, annotate_for=[], c=None, cmap='tab20b'):
@@ -27,3 +27,12 @@ def plot_players(z, z_info, annotate_for=[], c=None, cmap='tab20b'):
             plt.annotate(player, xy=xy)
 
     plt.show()
+
+def show_player_clusters(mixture_probs, info, top_n=10):
+    k = mixture_probs.shape[1]
+    for i in range(k):
+        top_idxs = np.argsort(-mixture_probs[:, i])[:top_n]
+        top_players = info.Player.iloc[top_idxs]
+        print("Cluster {}".format(i+1))
+        for player in top_players:
+            print("\t{}".format(player))

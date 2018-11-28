@@ -72,7 +72,7 @@ class VAE(object):
     def make_feed_dict_trn(self, data, epoch, n_epochs):
         return {
             self.x_ph: data,
-            self.kl_coef: min(1., 1./ (n_epochs / 2)),
+            self.kl_coef: min(1., epoch / 4),
             self.lr: 0.001
         }
 
@@ -80,5 +80,5 @@ class VAE(object):
         return {
             self.x_ph: data,
             self.sample_size: 10,
-            self.kl_coef: min(1., epoch/(n_epochs / 2))
+            self.kl_coef: 1.
         }
