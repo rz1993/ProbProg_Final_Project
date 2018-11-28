@@ -91,7 +91,8 @@ class GMM(object):
 
     def make_feed_dict_trn(self, data, epoch=None, n_epochs=None):
         return {
-            self.x_ph: data
+            self.x_ph: data,
+            self.sample_size: 100
         }
 
     def make_feed_dict_test(self, data, epoch=None, n_epochs=None, sample_size=100):
